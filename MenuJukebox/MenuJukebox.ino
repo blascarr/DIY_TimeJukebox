@@ -114,12 +114,11 @@ class clockscheduler{
 
       //Hay que cambiar si el estado del sistema esta parado que no ejecute nada
       //Update tempo for activation and next track
+      //Que aparezca el tiempo de final a la derecha
       if( timer.elapsed() >= list[ current_track ].timestamp ){
-        player.play( list[ current_track ].track );
-        current_track++;
+
         //Print only when change
         if( current_track < size ){
-          next_time.s = list[ current_track ].timestamp/1000;
           //If clock is extra 60 sec formt hh:mm:ss
           printNext( out, 1 );
         }else{
@@ -143,12 +142,21 @@ class clockscheduler{
     }
     
     void update( menuOut& out ){
+
+      if( timer.elapsed() >= list[ current_track ].timestamp ){
+        player.play( list[ current_track ].track );
+        current_track++;
+        if( current_track < size ){
+          next_time.s = list[ current_track ].timestamp/1000;
+        }
+      }
+      
       if( timer.elapsed() >= ( chronoToSeconds( clock_time )*1000 ) ){
         timer.stop();
         //Establecer todo al estado inicial
         //mainMenu[4].enabled=enabledStatus;
       }
-
+      
     }
 
     void printclock( menuOut& out, int row ){
